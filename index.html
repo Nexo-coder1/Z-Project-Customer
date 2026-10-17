@@ -155,17 +155,12 @@ class ZestoFirestoreRef {
     const snap=await ref.get();
     return {loc,ref,snap,data:snap.exists?(snap.data()||{}):{}};
   }
-  // Atomic create-if-absent. Resolves true when written, false when the document already exists.
+  // Writes the document (used for order placement; the order id is fixed per attempt, so retries overwrite safely).
   async create(value){
     const loc=this._location();
     if(!loc.docId||loc.nested) throw new Error('create() is only supported on documents');
-    try{
-      await zestoCollectionRef(loc.collection).doc(loc.docId).create(value);
-      return true;
-    }catch(e){
-      if(e&&e.code==='already-exists') return false;
-      throw e;
-    }
+    await zestoCollectionRef(loc.collection).doc(loc.docId).set(value);
+    return true;
   }
   async set(value){
     const loc=this._location();
