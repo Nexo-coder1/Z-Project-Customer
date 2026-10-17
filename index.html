@@ -216,7 +216,7 @@ const ZESTO_DENY_MSG="This account is not authorized for this panel.";
 let ZESTO_AUTH_FLOW=false, ZESTO_VERIFIED_UID=null, ZESTO_HANDLED_UID=null, ZESTO_PAGE_HANDLE=null, ZESTO_LAST_ROLE_ALERT=0;
 function zestoNormalizeMobile(input){const d=String(input||'').replace(/\D/g,'').slice(-10);return /^[6-9]\d{9}$/.test(d)?d:null}
 function zestoMobileAuthEmail(ten){return ten+'@mobile.zesto.app'}
-function zestoLoginEmail(id){const raw=String(id||'').trim();if(raw.includes('@'))return raw;const ten=zestoNormalizeMobile(raw);return ten?zestoMobileAuthEmail(ten):null}
+function zestoLoginEmail(id){const ten=zestoNormalizeMobile(id);return ten?zestoMobileAuthEmail(ten):null}
 function zestoErr(msg,code){const e=new Error(msg);if(code)e.code=code;return e}
 function zestoWrapAuthError(e,isMobile){
   const c=(e&&e.code)||'';
@@ -261,7 +261,7 @@ function zestoAuthGate(authInstance,user,requiredRole,handle){
 async function zestoSignInWithRole(authInstance,id,password,requiredRole){
   const raw=String(id||'').trim();
   const email=zestoLoginEmail(raw);
-  if(!email) throw zestoErr("Enter a valid 10-digit mobile number.");
+    if(!email) throw zestoErr("Enter a valid 10-digit mobile number.");
   ZESTO_AUTH_FLOW=true;
   try{
     let cred;
