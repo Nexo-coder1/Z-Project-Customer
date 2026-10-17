@@ -2168,7 +2168,7 @@ function LoginView(){
     <section style="padding:24px 20px" class="auth-animate">
       <div style="text-align:center;margin-bottom:22px"><div style="font-family:Poppins;font-weight:800;font-size:30px;color:var(--accentDark)">Welcome Back</div><p class="muted">Login to continue ordering</p></div>
       <div class="card pad">
-        <label>Email or Mobile Number</label><input id="lg-id" placeholder="you@email.com or 9876543210">
+        <label>Mobile Number</label><input id="lg-id" type="tel" placeholder="10-digit mobile number">
         <label>Password</label><input id="lg-pw" type="password" placeholder="Enter your password">
         <div id="lg-error" style="color:#E11D48;font-size:13px;margin-top:6px;display:none"></div>
         <button class="btn btn-block" id="lg-submit" style="margin-top:16px"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
@@ -2241,7 +2241,7 @@ function SignupView(){
       PROFILE.name=name;PROFILE.email=email;PROFILE.phone=mobile;PROFILE.isComplete=hasCompleteProfile();saveProfile();
       localStorage.removeItem("sf_referral_code");
       if(refCode)recordReferral(refCode,newUid,name,email);
-      ZESTO_AUTH_FLOW=false;getAuth().signOut();authBootHandled=true;zestoSuccessOverlay("Congratulations!","Your account has been created successfully. Please wait for admin approval before logging in.");routeTo("#/login");
+ZESTO_AUTH_FLOW=false;authBootHandled=true;const u=getAuth().currentUser;AUTH_USER=u;zestoHandleUser(u);refreshPrivateListeners();rebindCoreCatalogListeners();zestoSuccessOverlay("Congratulations!","Your account has been created. Welcome to Zesto!");routeTo("#/home");
     }).catch(e=>{ZESTO_AUTH_FLOW=false;getAuth().signOut();errBox.textContent=e.message.replace("Firebase: ","");errBox.style.display="block";btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-user-plus"></i> Sign Up'});
   });
 }
